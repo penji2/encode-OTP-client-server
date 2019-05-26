@@ -3,8 +3,7 @@ import sys
 import errno
 from coder1 import main
 HEADER_LENGTH = 10
-mem="bar"
-pas="pas"
+trace=0
 IP = "192.168.1.5"
 PORT = 1234
 my_username = input("Username: ")
@@ -38,9 +37,16 @@ while True:
     message = input(f'{my_username} > ')
     """ If message is not empty - send it """
     if message:
-
+        paslen=len(message)
         """ Encode message to bytes, prepare header and convert to bytes, like for username above, then send """
-        message=main(message,pas)
+        f=open("key.dat",mode="r")
+        f.seek(trace)
+        message=main(message,f.read(paslen))
+        print(f.read(paslen))
+        trace+=paslen
+
+
+        f.close()
         message = message.encode('utf-8')
         message_header = f"{len(message):<{HEADER_LENGTH}}".encode('utf-8')
         client_socket.send(message_header + message)
