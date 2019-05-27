@@ -20,6 +20,37 @@ def encrypting(bitlist, password):
         encrypted1.append(c)
     return encrypted1
 
+def decrypting(bitlist,password):
+    bitlist=list(bitlist)
+    password=list(password)
+    encrypted=[None]*len(bitlist)
+    encrypted1 = [[None for _ in range(8)] for _ in range(int(len(encrypted)/8))]
+    encrypted2=[]
+    for a in range(0, len(bitlist)):
+        if int(password[a]) == 1 and int(bitlist[a]) == 1:
+            encrypted[a]="0"
+        if int(password[a]) == 1 and int(bitlist[a]) == 0:
+            encrypted[a]="1"
+        if int(password[a]) == 0 and int(bitlist[a]) == 1:
+            encrypted[a]="1"
+        if int(password[a]) == 0 and int(bitlist[a]) == 0:
+            encrypted[a]="0"
+
+    for d in range(0,int(len(encrypted)/8)):
+        c=0
+        for a in encrypted:
+            encrypted1[d][c]=a
+            print(d,c,a)
+            c+=1
+            if c==8:
+                break
+    for a in range(0, int(len(encrypted)/8)):
+        c = ""
+        for b in range(0, 8):
+            c = c + encrypted1[a][b]
+        encrypted2.append(c)
+
+    return encrypted2
 
 def main(mes,pas):
     a = mes
@@ -49,5 +80,6 @@ def main(mes,pas):
     for a in f:
         f = (int(a, 2))
         encmessage.append(chr(f))
-    return y
 
+
+    return y
