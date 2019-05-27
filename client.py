@@ -1,20 +1,18 @@
 import socket
 import sys
 import errno
-
+from coder1 import main
 HEADER_LENGTH = 10
-
-IP = "127.0.0.1"
+trace=0
+IP = "192.168.1.5"
 PORT = 1234
 my_username = input("Username: ")
 
 """
-
 Create a socket
 socket.AF_INET - address family, IPv4, some otehr possible are AF_INET6, AF_BLUETOOTH, AF_UNIX
 socket.SOCK_STREAM - TCP, conection-based, socket.SOCK_DGRAM - UDP, connectionless, datagrams,
 socket.SOCK_RAW - raw IP packets
-
 """
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -28,7 +26,6 @@ client_socket.setblocking(False)
 Prepare username and header and send them
 We need to encode username to bytes, then count number of bytes and prepare header of fixed size,
 that we encode to bytes as well
-
 """
 username = my_username.encode('utf-8')
 username_header = f"{len(username):<{HEADER_LENGTH}}".encode('utf-8')
@@ -38,11 +35,18 @@ while True:
 
     """ Wait for user to input a message """
     message = input(f'{my_username} > ')
-
     """ If message is not empty - send it """
     if message:
-
+        paslen=len(message)
         """ Encode message to bytes, prepare header and convert to bytes, like for username above, then send """
+        f=open("key.dat",mode="r")
+        f.seek(trace)
+        message=main(message,f.read(paslen))
+        print(f.read(paslen))
+        trace+=paslen
+
+
+        f.close()
         message = message.encode('utf-8')
         message_header = f"{len(message):<{HEADER_LENGTH}}".encode('utf-8')
         client_socket.send(message_header + message)
