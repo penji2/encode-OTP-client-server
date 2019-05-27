@@ -1,9 +1,10 @@
 import socket
 import sys
 import errno
-from coder1 import main
+from coder import main,decrypting
 HEADER_LENGTH = 10
 trace=0
+trace1=0
 IP = "192.168.1.5"
 PORT = 1234
 my_username = input("Username: ")
@@ -42,7 +43,8 @@ while True:
         f=open("key.dat",mode="r")
         f.seek(trace)
         message=main(message,f.read(paslen))
-        print(f.read(paslen))
+
+
         trace+=paslen
 
 
@@ -83,27 +85,13 @@ while True:
             message_header = client_socket.recv(HEADER_LENGTH)
             message_length = int(message_header.decode('utf-8').strip())
             message = client_socket.recv(message_length).decode('utf-8')
-
+            paslen=len(message)
+            f1=open("key1.dat",mode="r")
+            f1.seek(trace1)
+            message=decrypting(message,f1.read(paslen))
+            trace1+=paslen
+            f1.close()
             """ Print message """
             print(f'{username} > {message}')
-
-    except IOError as e:
-        """
-        
-        This is normal on non blocking connections - when there are no incoming data error is going to be raised
-        Some operating systems will indicate that using AGAIN, and some using WOULDBLOCK error code
-        We are going to check for both - if one of them - that's expected, means no incoming data, continue as normal
-        If we got different error code - something happened
-        
-        """
-        if e.errno != errno.EAGAIN and e.errno != errno.EWOULDBLOCK:
-            print('Reading error: {}'.format(str(e)))
-            sys.exit()
-
-        """ We just did not receive anything """
-        continue
-
-    except Exception as e:
-        """ Any other exception - something happened, exit """
-        print('Reading error: '.format(str(e)))
-        sys.exit()
+    except:
+        pass
