@@ -11,7 +11,7 @@ class Client:
         self.trace = 0
         self.IP = "127.0.0.1"
         self.PORT = 1234
-        self.my_username = input("Username: ")
+        self.my_username = 'Default'  # = input("Username: ")
 
     def connect(self):
 
