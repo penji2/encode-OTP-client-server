@@ -35,7 +35,8 @@ def decrypting(bitlist,password):
             encrypted[a]="1"
         if int(password[a]) == 0 and int(bitlist[a]) == 0:
             encrypted[a]="0"
-
+    for a in encrypted:
+        print(a)
     for d in range(0,int(len(encrypted)/8)):
         c=0
         for a in encrypted:
