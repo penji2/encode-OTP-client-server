@@ -21,7 +21,7 @@ def encrypting(bitlist, password):
     return encrypted1
 
 
-def main(mes,pas):
+def main(mes, pas):
     a = mes
     b = pas
     c = list(a)
